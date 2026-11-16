@@ -1,21 +1,22 @@
 "use server";
 
 import { updateTag } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { checkPassword, createSession, destroySession, requireAdmin } from "@/lib/auth";
+import { auth, requireAdmin } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { CACHE_TAG_POSTS, postCacheTag } from "@/lib/posts";
 
-export async function login(formData: FormData) {
-  if (!checkPassword(String(formData.get("password") ?? ""))) {
-    redirect("/admin/login?error=1");
-  }
-  await createSession();
-  redirect("/admin");
+/** GitHub 로그인 페이지로 보낸다. 허용되지 않은 계정이면 errorCallbackURL로 돌아온다. */
+export async function login() {
+  const { url } = await auth.api.signInSocial({
+    body: { provider: "github", callbackURL: "/admin", errorCallbackURL: "/admin/login?error=1" },
+  });
+  redirect(url!);
 }
 
 export async function logout() {
-  await destroySession();
+  await auth.api.signOut({ headers: await headers() });
   redirect("/admin/login");
 }
 
