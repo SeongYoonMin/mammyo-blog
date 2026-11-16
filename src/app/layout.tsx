@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Script from "next/script";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { Sidebar } from "@/components/sidebar";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -23,30 +22,16 @@ const themeInit = `try{var t=localStorage.getItem('theme');var d=t?t==='dark':ma
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className="min-h-screen bg-white font-sans text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100">
+      <body className="min-h-dvh bg-canvas font-sans text-fg antialiased">
         <Script id="theme-init" strategy="beforeInteractive">
           {themeInit}
         </Script>
-        <div className="mx-auto flex min-h-screen max-w-2xl flex-col px-4">
-          <header className="flex items-center justify-between py-8">
-            <Link href="/" className="text-lg font-bold">
-              {site.name}
-            </Link>
-            <nav className="flex items-center gap-4 text-sm text-zinc-600 dark:text-zinc-400">
-              <Link href="/tags" className="hover:text-zinc-900 dark:hover:text-zinc-100">
-                태그
-              </Link>
-              <Link href="/about" className="hover:text-zinc-900 dark:hover:text-zinc-100">
-                소개
-              </Link>
-              <a href="/feed.xml" className="hover:text-zinc-900 dark:hover:text-zinc-100">
-                RSS
-              </a>
-              <ThemeToggle />
-            </nav>
-          </header>
-          <main className="flex-1">{children}</main>
-          <footer className="py-10 text-sm text-zinc-500">© {site.author}</footer>
+        <div className="mx-auto flex min-h-dvh max-w-6xl flex-col gap-2 p-2 md:flex-row-reverse md:p-4">
+          <Sidebar />
+          <div className="flex min-w-0 flex-1 flex-col rounded-panel bg-surface p-5 md:p-8">
+            <main className="flex-1">{children}</main>
+            <footer className="mt-16 text-[13px] text-muted">© {site.author}</footer>
+          </div>
         </div>
       </body>
     </html>

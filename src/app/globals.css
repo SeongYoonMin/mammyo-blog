@@ -4,8 +4,49 @@
 /* 다크 모드: <html class="dark"> 기준 (시스템 설정은 초기 스크립트에서 반영) */
 @custom-variant dark (&:where(.dark, .dark *));
 
-@theme {
+/*
+ * 색 토큰 (designbookmark.com/motion 참고)
+ * canvas: 페이지 바탕 / surface: 사이드바·메인 패널 / elevated: 패널 안의 카드
+ * chip: 알약형 버튼 / chip-active: 선택된 알약 / muted: 보조 텍스트
+ */
+:root {
+  --canvas: #f2f2f7;
+  --surface: #ffffff;
+  --elevated: rgba(116, 116, 128, 0.06);
+  --elevated-hover: rgba(116, 116, 128, 0.1);
+  --chip: rgba(116, 116, 128, 0.08);
+  --chip-active: #1c1c1e;
+  --chip-active-fg: #ffffff;
+  --fg: #000000;
+  --muted: rgba(60, 60, 67, 0.6);
+  --hairline: rgba(60, 60, 67, 0.12);
+}
+.dark {
+  --canvas: #000000;
+  --surface: rgba(255, 255, 255, 0.05);
+  --elevated: rgba(255, 255, 255, 0.05);
+  --elevated-hover: rgba(255, 255, 255, 0.08);
+  --chip: rgba(116, 116, 128, 0.12);
+  --chip-active: #2c2c2e;
+  --chip-active-fg: #ffffff;
+  --fg: #ffffff;
+  --muted: rgba(235, 235, 245, 0.6);
+  --hairline: rgba(235, 235, 245, 0.1);
+}
+
+@theme inline {
   --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --color-elevated-hover: var(--elevated-hover);
+  --color-chip: var(--chip);
+  --color-chip-active: var(--chip-active);
+  --color-chip-active-fg: var(--chip-active-fg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-hairline: var(--hairline);
+  --radius-panel: 20px;
 }
 
 html {

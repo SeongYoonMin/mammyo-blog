@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PostList } from "@/components/post-list";
+import { PageHeader, PostList, TagFilter } from "@/components/post-list";
 import { getPostsByTag, getTagsWithCount } from "@/lib/posts";
 
 // 태그별 목록: 모든 태그를 빌드 때 SSG, 새 태그는 첫 요청 때 ISR
@@ -29,12 +29,13 @@ export async function generateMetadata({ params }: PageProps<"/tags/[tag]">): Pr
 
 export default async function TagPage({ params }: PageProps<"/tags/[tag]">) {
   const tag = await resolveTag(params);
-  const posts = await getPostsByTag(tag);
+  const [posts, tags] = await Promise.all([getPostsByTag(tag), getTagsWithCount()]);
   if (posts.length === 0) notFound();
 
   return (
     <>
-      <h1 className="mb-8 text-2xl font-bold">#{tag}</h1>
+      <PageHeader title={`#${tag}`} description={`'${tag}' 태그가 붙은 글 ${posts.length}개`} />
+      <TagFilter tags={tags.map((t) => t.name)} active={tag} />
       <PostList posts={posts} />
     </>
   );
