@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TagLink } from "@/components/post-list";
 import { getPostBySlug, getPublishedPosts } from "@/lib/posts";
@@ -65,22 +66,30 @@ export default async function PostPage({ params }: PageProps<"/posts/[slug]">) {
   };
 
   return (
-    <article>
+    <article className="mx-auto max-w-2xl">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold leading-tight">{post.title}</h1>
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-zinc-500">
-          <time dateTime={post.publishedAt.toISOString()}>{formatDate(post.publishedAt)}</time>
-          {post.tags.map((tag) => (
-            <TagLink key={tag} tag={tag} />
-          ))}
-        </div>
+      <Link href="/" className="text-[13px] text-muted transition-colors hover:text-fg">
+        ← 전체 글
+      </Link>
+      <header className="mb-10 mt-6 border-b border-hairline pb-8">
+        <time dateTime={post.publishedAt.toISOString()} className="text-[13px] text-muted">
+          {formatDate(post.publishedAt)}
+        </time>
+        <h1 className="mt-2 text-[32px] font-medium leading-tight tracking-tight">{post.title}</h1>
+        {post.description && <p className="mt-3 text-muted">{post.description}</p>}
+        {post.tags.length > 0 && (
+          <div className="mt-5 flex flex-wrap gap-1.5">
+            {post.tags.map((tag) => (
+              <TagLink key={tag} tag={tag} />
+            ))}
+          </div>
+        )}
       </header>
       <div
-        className="prose prose-zinc max-w-none dark:prose-invert"
+        className="prose prose-zinc max-w-none dark:prose-invert prose-headings:font-medium prose-headings:tracking-tight prose-a:underline-offset-4 prose-pre:rounded-2xl prose-pre:bg-elevated prose-pre:text-fg"
         dangerouslySetInnerHTML={{ __html: post.html }}
       />
     </article>
