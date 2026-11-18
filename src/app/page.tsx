@@ -1,4 +1,5 @@
-import { PageHeader, PostList, TagFilter } from "@/components/post-list";
+import { HomeFeed } from "@/components/home-feed";
+import { PageHeader } from "@/components/post-list";
 import { getPublishedPosts, getTagsWithCount } from "@/lib/posts";
 import { site } from "@/lib/site";
 
@@ -10,8 +11,7 @@ export default async function HomePage() {
   return (
     <>
       <PageHeader title="전체 글" description={site.description} />
-      <TagFilter tags={tags.map((t) => t.name)} />
-      <PostList posts={posts} />
+      <HomeFeed posts={posts} tags={tags.map((t) => t.name)} />
     </>
   );
 }

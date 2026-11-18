@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Sidebar } from "@/components/sidebar";
 import { site } from "@/lib/site";
 import "./globals.css";
@@ -22,10 +21,12 @@ const themeInit = `try{var t=localStorage.getItem('theme');var d=t?t==='dark':ma
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ko" suppressHydrationWarning>
+      <head>
+        {/* next/script(beforeInteractive)의 인라인 스크립트는 클라이언트 렌더 시 React가 <script> 경고를 낸다.
+            서버 HTML에만 들어가면 되므로 일반 script로 head에 직접 넣는다. */}
+        <script dangerouslySetInnerHTML={{ __html: themeInit }} />
+      </head>
       <body className="min-h-dvh bg-canvas font-sans text-fg antialiased">
-        <Script id="theme-init" strategy="beforeInteractive">
-          {themeInit}
-        </Script>
         <div className="mx-auto flex min-h-dvh max-w-6xl flex-col gap-2 p-2 md:flex-row-reverse md:p-4">
           <Sidebar />
           <div className="flex min-w-0 flex-1 flex-col rounded-panel bg-surface p-5 md:p-8">
