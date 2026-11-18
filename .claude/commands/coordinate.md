@@ -3,12 +3,9 @@ description: 현재 브랜치를 종합 브랜치로 삼아 Orca 작업자·리�
 argument-hint: <작업 내용> (예: 할 일 목록에 get(id) 함수 추가)
 ---
 
-너는 총괄(Coordinator)이다. 코드를 직접 수정하지 마라.
-작업 분배, 진행 확인, 검증, 보고만 한다. Orca orchestration으로 진행한다.
-명령의 정확한 문법은 orchestration 스킬(또는 `orca skills get orchestration`)을 확인하고 따른다.
+너는 총괄(Coordinator)이다. 코드를 직접 수정하지 마라. 작업 분배, 진행 확인, 검증, 보고만 한다. Orca orchestration으로 진행한다. 명령의 정확한 문법은 orchestration 스킬(또는 `orca skills get orchestration`)을 확인하고 따른다.
 
-[작업]
-$ARGUMENTS
+[작업] $ARGUMENTS
 
 [0. 시작 전 확인 — 하나라도 실패하면 중단하고 보고]
 1. `git branch --show-current`로 현재 브랜치를 확인한다. 이 브랜치를 "종합 브랜치(BASE)"라 부른다.
@@ -25,8 +22,7 @@ $ARGUMENTS
 
 [2. 작업자 생성]
 - 작성자마다 BASE에서 갈라지는 자식 worktree를 만든다. 반드시 기준 브랜치를 BASE로 지정한다. (`--parent-worktree active --base-branch <BASE>`)
-- 하위 브랜치 이름은 `<BASE>-<역할>` 형식으로 한다. (예: BASE가 feature/login이면 feature/login-api)
-  `<BASE>/<역할>` 형식은 git에서 BASE와 충돌하므로 쓰지 않는다.
+- 하위 브랜치 이름은 `<BASE>-<역할>` 형식으로 한다. (예: BASE가 feature/login이면 feature/login-api) `<BASE>/<역할>` 형식은 git에서 BASE와 충돌하므로 쓰지 않는다.
 - 만든 뒤 `git merge-base <하위 브랜치> <BASE>`가 기록한 BASE 커밋과 같은지 확인한다. 다르면 중단하고 보고한다.
 - 작성자 1명당 worktree 1개. 한 worktree에 작성자를 둘 이상 두지 않는다.
 - 리뷰어 1명은 읽기 전용이다. 파일 수정, 커밋, worktree 생성을 하지 않는다.
@@ -34,7 +30,7 @@ $ARGUMENTS
 [3. 진행]
 1. 작성자에게 하위 작업을 보내고 worker_done 또는 escalation을 기다린다. sleep으로 반복 확인하지 말고 `check --wait`를 쓴다.
 2. 작성자가 worker_done을 보내면 작성자가 멈췄는지 확인하고, 그 worktree에서 커밋 해시를 확인한 뒤 테스트를 직접 실행한다.
-3. 그 커밋 해시를 리뷰어에게 보내 구현 코드와 테스트 코드를 함께 검토하게 한다. 리뷰어에게는 결함마다 파일 위치, 재현 방법, 기대 결과와 실제 결과를 요구한다.
+3. 그 커밋 해시를 리뷰어에게 보내 구현 코드와 테스트 코드를 함께 검토하게 한다. 리뷰어에게는 결함마다 파일 위치, 재현 방법, 기대 결과와 실제 결과를 요구한다. 리뷰어 지시는 리뷰어 명령으로 시작한다: Claude Code면 `/reviewer <커밋 해시> <BASE> <완료 조건>`, Codex면 `$reviewer <커밋 해시> <BASE> <완료 조건>`.
 4. 막는 결함이 있으면 해당 작성자에게 돌려보낸다. 하위 작업당 수정은 최대 2회. 그래도 남으면 해결하지 말고 보고에 남긴다.
 5. 작업자가 질문하면 판단이 필요한 것은 사용자에게 묻는다. 추측으로 답하지 않는다.
 6. 작업자가 오래 응답이 없어도 바로 종료하거나 재시작하지 않는다. 로그와 대기 중인 권한 요청부터 확인한다.
