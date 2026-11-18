@@ -17,6 +17,7 @@ export type PostSummary = {
   slug: string;
   title: string;
   description: string;
+  coverImage: string | null;
   publishedAt: Date;
   updatedAt: Date;
   tags: string[];
@@ -28,6 +29,7 @@ const summarySelect = {
   slug: true,
   title: true,
   description: true,
+  coverImage: true,
   publishedAt: true,
   createdAt: true,
   updatedAt: true,
@@ -38,6 +40,7 @@ type SummaryRow = {
   slug: string;
   title: string;
   description: string;
+  coverImage: string | null;
   publishedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
@@ -49,6 +52,7 @@ function toSummary(p: SummaryRow): PostSummary {
     slug: p.slug,
     title: p.title,
     description: p.description,
+    coverImage: p.coverImage,
     publishedAt: p.publishedAt ?? p.createdAt,
     updatedAt: p.updatedAt,
     tags: p.tags.map((t) => t.name),

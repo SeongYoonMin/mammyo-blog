@@ -89,7 +89,7 @@ export default async function PostPage({ params }: PageProps<"/posts/[slug]">) {
         )}
       </header>
       <div
-        className="prose prose-zinc max-w-none dark:prose-invert prose-headings:font-medium prose-headings:tracking-tight prose-a:underline-offset-4 prose-pre:rounded-2xl prose-pre:bg-elevated prose-pre:text-fg"
+        className="prose prose-zinc max-w-none dark:prose-invert prose-headings:font-medium prose-headings:tracking-tight prose-a:text-accent prose-a:underline-offset-4 prose-blockquote:border-brand prose-pre:rounded-2xl prose-pre:bg-elevated prose-pre:text-fg"
         dangerouslySetInnerHTML={{ __html: post.html }}
       />
     </article>

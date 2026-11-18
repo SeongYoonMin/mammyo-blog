@@ -29,6 +29,15 @@ function slugify(input: string) {
     .replace(/-+/g, "-");
 }
 
+function isHttpUrl(value: string) {
+  try {
+    const { protocol } = new URL(value);
+    return protocol === "http:" || protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 /** 글 저장 후 공개 페이지 캐시를 즉시 무효화 (온디맨드 ISR) */
 function invalidate(...slugs: string[]) {
   updateTag(CACHE_TAG_POSTS);
@@ -43,6 +52,7 @@ export async function savePost(formData: FormData) {
   const slug = slugify(String(formData.get("slug") ?? "") || title);
   const description = String(formData.get("description") ?? "").trim();
   const content = String(formData.get("content") ?? "");
+  const coverImage = String(formData.get("coverImage") ?? "").trim() || null;
   const published = formData.get("published") === "on";
   const tagNames = [
     ...new Set(
@@ -53,13 +63,14 @@ export async function savePost(formData: FormData) {
     ),
   ];
   if (!title || !slug || !content) throw new Error("제목, slug, 본문은 필수입니다.");
+  if (coverImage && !isHttpUrl(coverImage)) throw new Error("커버 이미지는 http(s) URL이어야 합니다.");
 
   const connectOrCreate = tagNames.map((name) => ({ where: { name }, create: { name } }));
   const previous = id
     ? await db.post.findUnique({ where: { id }, select: { slug: true, publishedAt: true } })
     : null;
   const publishedAt = published ? (previous?.publishedAt ?? new Date()) : (previous?.publishedAt ?? null);
-  const fields = { title, slug, description, content, published, publishedAt };
+  const fields = { title, slug, description, content, coverImage, published, publishedAt };
 
   if (previous && id) {
     await db.post.update({ where: { id }, data: { ...fields, tags: { set: [], connectOrCreate } } });
