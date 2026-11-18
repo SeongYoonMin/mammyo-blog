@@ -15,8 +15,11 @@
   --elevated: rgba(116, 116, 128, 0.06);
   --elevated-hover: rgba(116, 116, 128, 0.1);
   --chip: rgba(116, 116, 128, 0.08);
-  --chip-active: #1c1c1e;
-  --chip-active-fg: #ffffff;
+  --brand: #aa9281; /* 대표 컬러: 다크샌디. 면(알약·커버)에 사용 */
+  --brand-fg: #2a211b; /* brand 위 글자 (5.4:1) */
+  --accent: #7a6555; /* 흰 바탕 위 글자·링크용으로 진하게 (5.5:1) */
+  --chip-active: var(--brand);
+  --chip-active-fg: var(--brand-fg);
   --fg: #000000;
   --muted: rgba(60, 60, 67, 0.6);
   --hairline: rgba(60, 60, 67, 0.12);
@@ -27,19 +30,25 @@
   --elevated: rgba(255, 255, 255, 0.05);
   --elevated-hover: rgba(255, 255, 255, 0.08);
   --chip: rgba(116, 116, 128, 0.12);
-  --chip-active: #2c2c2e;
-  --chip-active-fg: #ffffff;
+  --brand: #aa9281;
+  --brand-fg: #2a211b;
+  --accent: #c2ae9f; /* 어두운 바탕 위 글자·링크용으로 밝게 (9.1:1) */
+  --chip-active: var(--brand);
+  --chip-active-fg: var(--brand-fg);
   --fg: #ffffff;
   --muted: rgba(235, 235, 245, 0.6);
   --hairline: rgba(235, 235, 245, 0.1);
 }
 
 @theme inline {
-  --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-sans: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
   --color-elevated: var(--elevated);
   --color-elevated-hover: var(--elevated-hover);
+  --color-brand: var(--brand);
+  --color-brand-fg: var(--brand-fg);
+  --color-accent: var(--accent);
   --color-chip: var(--chip);
   --color-chip-active: var(--chip-active);
   --color-chip-active-fg: var(--chip-active-fg);
@@ -54,4 +63,9 @@ html {
 }
 html.dark {
   color-scheme: dark;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }

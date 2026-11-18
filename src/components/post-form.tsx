@@ -5,6 +5,7 @@ type Initial = {
   title: string;
   slug: string;
   description: string;
+  coverImage: string | null;
   content: string;
   published: boolean;
   tags: string[];
@@ -28,6 +29,13 @@ export function PostForm({ post }: { post?: Initial }) {
         required
         placeholder="요약 (검색 결과·OG 설명에 사용)"
         defaultValue={post?.description}
+        className={input}
+      />
+      <input
+        name="coverImage"
+        type="url"
+        placeholder="썸네일 이미지 URL (선택, 16:10 권장 · 비우면 자동 커버)"
+        defaultValue={post?.coverImage ?? ""}
         className={input}
       />
       <input

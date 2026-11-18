@@ -13,6 +13,7 @@ model Post {
   title       String
   description String
   content     String // Markdown
+  coverImage  String? // 썸네일 URL (없으면 태그 색 기반 자동 커버)
   published   Boolean   @default(false)
   publishedAt DateTime?
   createdAt   DateTime  @default(now())
