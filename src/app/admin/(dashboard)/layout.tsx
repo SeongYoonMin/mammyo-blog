@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { AdminNav } from "@/components/admin-nav";
 import { requireAdmin } from "@/lib/auth";
 import { logout } from "../actions";
 
@@ -9,15 +9,14 @@ export default async function DashboardLayout({ children }: LayoutProps<"/admin"
   await requireAdmin();
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between border-b border-zinc-200 pb-3 text-sm dark:border-zinc-800">
-        <div className="flex gap-4">
-          <Link href="/admin" className="font-semibold">
-            글 관리
-          </Link>
-          <Link href="/admin/posts/new">새 글</Link>
+      <div className="mb-8 flex items-center justify-between gap-3 border-b border-hairline pb-4">
+        <div className="flex items-center gap-3">
+          <span className="text-[13px] font-medium text-accent">관리자</span>
+          <span aria-hidden className="h-3 w-px bg-hairline" />
+          <AdminNav />
         </div>
         <form action={logout}>
-          <button className="text-zinc-500 hover:underline">로그아웃</button>
+          <button className="text-[13px] text-muted transition-colors hover:text-fg">로그아웃</button>
         </form>
       </div>
       {children}
