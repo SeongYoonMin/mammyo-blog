@@ -56,8 +56,11 @@ function coverColor(seed: string) {
 
 const zoom = "transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]";
 
-/** 16:10 썸네일. 카드(.group) hover 시 살짝 확대 */
-export function PostCover({ post, large }: { post: PostSummary; large?: boolean }) {
+/**
+ * 16:10 썸네일. 카드(.group) hover 시 살짝 확대.
+ * bare: 커버 이미지가 없을 때 태그·제목 없이 색 배경(+작은 이미지 아이콘)만 그린다 — 옆에 제목이 따로 있는 admin 목록용.
+ */
+export function PostCover({ post, large, bare }: { post: PostSummary; large?: boolean; bare?: boolean }) {
   const [backgroundColor, color] = coverColor(post.tags[0] ?? post.slug);
   return (
     <div className="relative aspect-[16/10] overflow-hidden rounded-[14px] bg-elevated">
@@ -70,6 +73,18 @@ export function PostCover({ post, large }: { post: PostSummary; large?: boolean 
           loading={large ? "eager" : "lazy"}
           className={`size-full object-cover ${zoom}`}
         />
+      ) : bare ? (
+        <div
+          aria-hidden
+          style={{ backgroundColor, color }}
+          className={`flex size-full items-center justify-center ${zoom}`}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="size-[22%] min-w-4 opacity-35">
+            <rect x="3" y="4" width="18" height="16" rx="2.5" />
+            <circle cx="9" cy="10" r="1.75" />
+            <path d="m21 16-5-5-9 9" />
+          </svg>
+        </div>
       ) : (
         <div
           aria-hidden

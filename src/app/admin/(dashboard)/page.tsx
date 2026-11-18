@@ -67,6 +67,7 @@ export default async function AdminPostsPage() {
               >
                 <div className="w-28 shrink-0 sm:w-40">
                   <PostCover
+                    bare
                     post={{
                       slug: post.slug,
                       title: post.title,
