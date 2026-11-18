@@ -11,5 +11,19 @@ export default async function EditPostPage({ params }: PageProps<"/admin/posts/[
   const post = await db.post.findUnique({ where: { id }, include: { tags: true } });
   if (!post) notFound();
 
-  return <PostForm post={{ ...post, tags: post.tags.map((t) => t.name) }} />;
+  // PostForm은 클라이언트 컴포넌트이므로 폼에 필요한 필드만 직렬화해 넘긴다
+  return (
+    <PostForm
+      post={{
+        id: post.id,
+        title: post.title,
+        slug: post.slug,
+        description: post.description,
+        coverImage: post.coverImage,
+        content: post.content,
+        published: post.published,
+        tags: post.tags.map((t) => t.name),
+      }}
+    />
+  );
 }
