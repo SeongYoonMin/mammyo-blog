@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageHeader } from "@/components/post-list";
 import { getTagsWithCount } from "@/lib/posts";
 
 // 태그 목록: SSG + 'posts' 태그 무효화로 ISR
@@ -14,15 +15,16 @@ export default async function TagsPage() {
   const tags = await getTagsWithCount();
   return (
     <>
-      <h1 className="mb-6 text-2xl font-bold">태그</h1>
-      <ul className="flex flex-wrap gap-3">
+      <PageHeader title="태그" description={`주제별로 글을 모아 봅니다. 태그 ${tags.length}개`} />
+      <ul className="flex flex-wrap gap-2">
         {tags.map((t) => (
           <li key={t.name}>
             <Link
               href={`/tags/${encodeURIComponent(t.name)}`}
-              className="rounded bg-zinc-100 px-3 py-1 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+              className="flex h-10 items-center gap-2 rounded-full bg-chip px-4 text-[15px] transition-colors hover:bg-elevated-hover"
             >
-              #{t.name} <span className="text-zinc-500">({t.count})</span>
+              #{t.name}
+              <span className="text-[13px] text-muted">{t.count}</span>
             </Link>
           </li>
         ))}
